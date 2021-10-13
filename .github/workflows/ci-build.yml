@@ -14,7 +14,7 @@ jobs:
     
     uses: marmyshev-test/actions-fork-pull-test/.github/workflows/build.yml@main
     with:
-      analyze: ${{ github.event.pull_request.head.repo.full_name == github.event.repository.full_name }}
+      analyze: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.event.repository.full_name }}
     secrets:
       my-secret: ${{ secrets.MY_SECRET }}
       github-token: ${{ secrets.GITHUB_TOKEN }}

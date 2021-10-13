@@ -28,13 +28,15 @@ jobs:
       - name: Run a multi-line script
         env:
           S1: ${{ secrets.my-secret }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           GITHUB_TOKEN1: ${{ secrets.github-token }}
           ANALYZE: ${{ inputs.analyze }}
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
           echo secret S1: ${S1}
-          echo secret GITHUB_TOKEN: ${GITHUB_TOKEN1}
+          echo secret GITHUB_TOKEN: ${GITHUB_TOKEN}
+          echo secret GITHUB_TOKEN1: ${GITHUB_TOKEN1}
           echo secret ANALYZE: ${ANALYZE}
           if [ -z "${S1}" ]; then echo "secret var is Unset!"; else echo "secret var is set"; fi
           echo README:
