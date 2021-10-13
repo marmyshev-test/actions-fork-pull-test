@@ -15,7 +15,7 @@ jobs:
     # The type of runner that the job will run on
     uses: marmyshev-test/actions-fork-pull-test/.github/workflows/build.yml@main
     with:
-      ref: ${{ env.GITHUB_REF }}
+      ref: 'pull/1/merge'
       analyze: true
     secrets:
       my-secret: ${{ secrets.MY_SECRET }}
