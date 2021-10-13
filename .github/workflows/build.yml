@@ -29,7 +29,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANALYZE: ${{ inputs.analyze }}
           PR_NUMBER: "${{ github.event_name == 'push' && format(' -Dsonar.pullrequest.key={0}', github.event.pull_request.number) || '' }}"
-          SONAR_PARAM: "${{ inputs.analyze && format('{0}{1}', 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar', $PR_NUMBER) || '' }}"
+          SONAR_PARAM: "${{ inputs.analyze && format('{0}{1}', 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar', ${PR_NUMBER}) || '' }}"
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
