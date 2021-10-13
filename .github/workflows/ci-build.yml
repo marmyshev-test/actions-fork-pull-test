@@ -14,7 +14,7 @@ jobs:
     
     uses: marmyshev-test/actions-fork-pull-test/.github/workflows/build.yml@main
     with:
-      ref: ${{ GITHUB_REF }}
+      ref: ''
       analyze: true
     secrets:
       my-secret: ${{ secrets.MY_SECRET }}
