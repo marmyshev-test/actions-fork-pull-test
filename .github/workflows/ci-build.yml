@@ -12,7 +12,7 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.event.repository.full_name  && !contains(github.event.pull_request.labels.*.name, 'Analyze')
     # The type of runner that the job will run on
     
-    uses: marmyshev-test/actions-fork-pull-test/.github/workflows/build.yml@main
+    uses: ./.github/workflows/build.yml@main
     with:
       analyze: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.event.repository.full_name }}
     secrets:
