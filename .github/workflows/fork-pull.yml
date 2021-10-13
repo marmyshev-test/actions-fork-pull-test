@@ -32,6 +32,8 @@ jobs:
           echo secret S1: ${S1}
           echo secret GITHUB_TOKEN: ${GITHUB_TOKEN}
           if [ -z "${S1}" ]; then echo "secret var is Unset!"; else echo "secret var is set"; fi
+          echo README:
+          cat README.md
       
       - name: Optional push
         if: github.event_name == 'push'
