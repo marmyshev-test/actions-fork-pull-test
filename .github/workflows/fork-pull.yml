@@ -3,7 +3,7 @@
 name: CI
 
 # Controls when the action will run. 
-on: [push, pull_request, pull_request_target]
+on: [push, pull_request_target]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -16,6 +16,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
