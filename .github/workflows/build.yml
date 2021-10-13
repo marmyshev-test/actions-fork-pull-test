@@ -28,6 +28,8 @@ jobs:
           S1: ${{ secrets.my-secret }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANALYZE: ${{ inputs.analyze }}
+          PR_NUMBER: "${{ github.event_name == 'push' && format(' -Dsonar.pullrequest.key={0}', github.event.pull_request.number) || '' }}"
+          SONAR_PARAM: "${{ inputs.analyze && format('{0}{1}', 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar', $PR_NUMBER) || '' }}"
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
@@ -36,6 +38,8 @@ jobs:
           echo secret ANALYZE: ${ANALYZE}
           if [ -z "${S1}" ]; then echo "secret var is Unset!"; else echo "secret var is set"; fi
           echo event name: ${{ github.event_name }}
+          echo PR_NUMBER: ${PR_NUMBER}
+          echo SONAR_PARAM: ${SONAR_PARAM}
           if [ ${{ github.event_name == 'push'}} ]; then echo "this is push"; fi
           if [ ${{ github.event_name == 'pull_request_target'}} ]; then echo "this is pull_request_target"; fi
           echo README:
