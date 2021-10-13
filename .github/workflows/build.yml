@@ -3,11 +3,9 @@ name: Reusable build with analyze
 on:
   workflow_call:
     inputs:
-      ref:
-        required: true
-        type: string
       analyze:
-        required: true
+        default: false
+        required: false
         type: boolean
     secrets:
       my-secret:
@@ -21,18 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        if: inputs.analyze
         with:
-          ref: ${{ inputs.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/checkout@v2
+        if: ${{ !inputs.analyze }}
 
       - name: Run a multi-line script
         env:
           S1: ${{ secrets.my-secret }}
           GITHUB_TOKEN: ${{ secrets.github-token }}
+          ANALYZE: ${{ inputs.analyze }}
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
           echo secret S1: ${S1}
           echo secret GITHUB_TOKEN: ${GITHUB_TOKEN}
+          echo secret ANALYZE: ${ANALYZE}
           if [ -z "${S1}" ]; then echo "secret var is Unset!"; else echo "secret var is set"; fi
           echo README:
           cat README.md
