@@ -10,13 +10,13 @@ on:
     secrets:
       my-secret:
         required: true
-      github-token:
-        required: true
 
 jobs:
   build-and-analyze:
     name: Pass input and secrets to my-action
     runs-on: ubuntu-latest
+    env:
+      PR_NUMBER: "${{ github.event_name == 'pull_request_target' && format(' -Dsonar.pullrequest.key={0}', github.event.pull_request.number) || '' }}"
     steps:
       - uses: actions/checkout@v2
         if: inputs.analyze
@@ -28,16 +28,21 @@ jobs:
       - name: Run a multi-line script
         env:
           S1: ${{ secrets.my-secret }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          GITHUB_TOKEN1: ${{ secrets.github-token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANALYZE: ${{ inputs.analyze }}
+          
+          SONAR_PARAM: "${{ inputs.analyze && format('{0}{1}', 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar', env.PR_NUMBER) || '' }}"
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
           echo secret S1: ${S1}
           echo secret GITHUB_TOKEN: ${GITHUB_TOKEN}
-          echo secret GITHUB_TOKEN1: ${GITHUB_TOKEN1}
           echo secret ANALYZE: ${ANALYZE}
           if [ -z "${S1}" ]; then echo "secret var is Unset!"; else echo "secret var is set"; fi
+          echo event name: ${{ github.event_name }}
+          echo PR_NUMBER: ${PR_NUMBER}
+          echo SONAR_PARAM: ${SONAR_PARAM}
+          if [ ${{ github.event_name == 'push'}} ]; then echo "this is push"; fi
+          if [ ${{ github.event_name == 'pull_request_target'}} ]; then echo "this is pull_request_target"; fi
           echo README:
           cat README.md
