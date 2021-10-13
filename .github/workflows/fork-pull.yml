@@ -13,17 +13,11 @@ jobs:
   build:
     if: github.event.pull_request.head.repo.full_name != github.event.repository.full_name && contains(github.event.pull_request.labels.*.name, 'Analyze')
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: ${{ GITHUB_REF }}
+      analyze: true
+    secrets:
+      my-secret: ${{ secrets.MY_SECRET }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ GITHUB_REF }}
-
-      # reuse workflow
-      - uses: ./.github/workflows/build.yml
-        secrets:
-          my-secret: ${{ secrets.MY_SECRET }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}

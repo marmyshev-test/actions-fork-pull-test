@@ -2,6 +2,13 @@ name: Reusable build with analyze
 
 on:
   workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+      analyze:
+        required: true
+        type: boolean
     secrets:
       my-secret:
         required: true
@@ -13,6 +20,10 @@ jobs:
     name: Pass input and secrets to my-action
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.ref }}
+
       - name: Run a multi-line script
         env:
           S1: ${{ secrets.my-secret }}
