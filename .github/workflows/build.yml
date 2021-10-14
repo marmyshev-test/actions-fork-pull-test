@@ -17,11 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PR_NUMBER: "${{ github.event_name == 'pull_request_target' && format(' -Dsonar.pullrequest.key={0}', github.event.pull_request.number) || '' }}"
+      PR_REF: "${{ github.event_name == 'pull_request_target' && format('refs/pull/{0}/merge', github.event.pull_request.number) || '' }}"
     steps:
       - uses: actions/checkout@v2
         if: inputs.analyze
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ env.PR_REF }}
       - uses: actions/checkout@v2
         if: ${{ !inputs.analyze }}
 
